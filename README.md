@@ -1,8 +1,8 @@
 # Music-cipher
 
-           +-------------------+                          +------------------------+
-           |                   |                          |                        |
-DATA +-----+  CipherComponent  +---> Random-Like Data +--->  CompositionComponent  +--->  Music
-           |                   |                          |                        |
-           +-------------------+                          +------------------------+
+         +-------------------+                          +------------------------+
+         |                   |                          |                        |
+DATA +---+  CipherComponent  +---> Random-Like Data +--->  CompositionComponent  +---> Music
+         |                   |                          |                        |
+         +-------------------+                          +------------------------+
 
