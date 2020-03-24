@@ -215,20 +215,17 @@ public class Adder {
         int n = rg.nextInt(2);
         s=s+Integer.toBinaryString(n);
     }
-
+        this.Strinput=s;
         return s;
     }
 
-    void createPaterns(){
-        for(int i =0; i < 8;i++){
-            MyPattern Pattern = new MyPattern();
-            this.patternField.add(Pattern);
-        }
+    public String codedString(int n){
+        return Strinput.substring(0,n);
     }
 
-    void add(){
-        this.createPaterns();
-    }
+
+
+
 
 
 

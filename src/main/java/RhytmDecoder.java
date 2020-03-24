@@ -112,4 +112,8 @@ public class RhytmDecoder {
     public String getBinaryOutput() {
         return BinaryOutput;
     }
+
+    public ArrayList<String[]> getGroupedParsedRhytm() {
+        return groupedParsedRhytm;
+    }
 }

@@ -149,7 +149,7 @@ private void addMelody(int b, Integer[] playedChord){
             }
         }
 
-        if(previousNotePosition>=55&&previousNotePosition<=79){
+        if(previousNote>=55&&previousNote<=79){
             Integer choice = Integer.parseInt(Strinput.substring(0,1),2);
             //todo                      REMOVE 1 DIGITS
             this.Strinput = Strinput.substring(1);

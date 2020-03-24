@@ -15,10 +15,11 @@ public class Main {
 
     public static void main(String[] args) {
         Player player = new Player();
-
+        String controlString;
+        String finalString="";
         Pattern mainPattern = new Pattern();
         //todo   Choosing key by tonic value + choosing chord progression with permutation 0=I 1=V 2=VI 3=IV
-        Adder adder = new Adder(11,new int[]{0,2,1,3});
+        Adder adder = new Adder(0,new int[]{0,1,2,3});
         //todo   Generating random binary string
         String Strinput = adder.binNumber();
 
@@ -59,6 +60,8 @@ public class Main {
         System.out.println(Strinput);
 
         System.out.println("zakodovali sme dokopy "+(200-Strinput.length()));
+        controlString=adder.codedString(200-Strinput.length());
+        System.out.println(controlString);
 
         //
 //        for(int i =0; i < 8; i++){
@@ -97,6 +100,19 @@ Pattern translatedPattern=new Pattern();
         RhytmDecoder rhytmDecoder = new RhytmDecoder(translatedPattern.toString(),BinaryOutput);
         rhytmDecoder.decodeRhytm();
         System.out.println(rhytmDecoder.getBinaryOutput());
+        finalString+=rhytmDecoder.getBinaryOutput();
+
+        MelodyDecoder melodyDecoder = new MelodyDecoder(translatedPattern.toString(),BinaryOutput,rhytmDecoder.getGroupedParsedRhytm());
+        melodyDecoder.decodeMelody();
+        finalString+=melodyDecoder.getBinaryOutput();
+
+        for(int i =0;i<finalString.length();i++){
+            if(finalString.toCharArray()[i]==controlString.toCharArray()[i]){
+                System.out.print("\u001B[32m"+finalString.toCharArray()[i]);
+            }else{
+                System.out.print("\u001B[31m"+finalString.toCharArray()[i]);
+            }
+        }
 
     }
 
