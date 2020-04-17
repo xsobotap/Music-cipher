@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.crypto.*;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import sun.misc.BASE64Decoder;
@@ -27,13 +28,14 @@ public class AESCypher {
         SecureRandom secureRandom = new SecureRandom();
 
         //Noonce should be 12 bytes
-        byte[] iv = new byte[12];
+        byte[] iv = new byte[16];
         secureRandom.nextBytes(iv);
 
         SecretKey secretKey = generateSecretKey(key, iv);
 
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        GCMParameterSpec parameterSpec = new GCMParameterSpec(128, iv);
+        Cipher cipher = Cipher.getInstance("AES");
+        //ParameterSpec parameterSpec = new ParameterSpec(128, iv);
+        IvParameterSpec parameterSpec = new IvParameterSpec(iv);
         //Encryption mode on!
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, parameterSpec);
         //Encrypt the data
@@ -86,11 +88,10 @@ public class AESCypher {
 
     }
 
+   /* private static final String ALGO = "AES";
+    private byte[] keyValue;
 
-   // private static final String ALGO = "AES";
-    //private byte[] keyValue;
-
-/*    public AESCypher(String key){
+  public AESCypher(String key){
         keyValue=key.getBytes();
     }
 
@@ -98,9 +99,9 @@ public class AESCypher {
         Key key = this.generateKey();
         Cipher c = Cipher.getInstance(ALGO);
         c.init(Cipher.ENCRYPT_MODE,key);
-        //byte[] encodedValue = c.doFinal(Data.getBytes());
+        byte[] encodedValue = c.doFinal(Data.getBytes());
 
-        byte[] encodedValue= new BigInteger(Data, 2).toByteArray();
+        //byte[] encodedValue= new BigInteger(Data, 2).toByteArray();
 
         String encryptedValue = new BASE64Encoder().encode(encodedValue);
         return encryptedValue;

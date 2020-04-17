@@ -210,7 +210,7 @@ public class Adder {
     //todo                                              GENERATES RANDOM BIBNARY STRING
     public String binNumber() {
         String s="";
-        for(int i=0;i<6*128;i++){
+        for(int i=0;i<200;i++){
         Random rg = new Random();
         int n = rg.nextInt(2);
         s=s+Integer.toBinaryString(n);

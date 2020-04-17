@@ -16,22 +16,9 @@ public class RhytmAutomaton_2 {
     //todo                                              PUT TOGETHER FOR RANDOM CHOOSING
 
 
-    public RhytmAutomaton_2(String strinput,int a) {
+    public RhytmAutomaton_2(String strinput/*,int a*/) {
         Strinput = strinput;
-        this.a=a;
-        if(a==0){
-            String[] beat1 ={"i","i"};
-            String[] beat2 ={"i","Ri"};
-            String[] beat3 ={"i.","Rs"};
 
-//        String[] beat4 ={"i","Rs","s"};
-//        String[] beat5 ={"i","s","Rs"};
-//        String[] beat6 ={"i","s","s"};
-//        String[] beat7 ={"i.","s"};
-
-            this.allRhytm=new ArrayList<String[]>(Arrays.asList(beat0,beat1,beat2,beat3/*,beat4,beat5,beat6,beat7*/));
-
-        }else{
             String[] beat1 ={"i","i"};
             String[] beat2 ={"i","Ri"};
             String[] beat3 ={"i.","Rs"};
@@ -43,7 +30,7 @@ public class RhytmAutomaton_2 {
 
             this.allRhytm=new ArrayList<String[]>(Arrays.asList(beat0,beat1,beat2,beat3,beat4,beat5,beat6,beat7));
 
-        }
+
 
 
 
@@ -58,13 +45,10 @@ public class RhytmAutomaton_2 {
         for(int i =0;i<12;i++) {
             //todo REMOVE 3 DIGITS
             int choice=0;
-            if(a==0) {
-               choice = Integer.parseInt(Strinput.substring(0, 2), 2);
-                this.Strinput = Strinput.substring(2);
-            }else{
+
                 choice = Integer.parseInt(Strinput.substring(0, 3), 2);
                 this.Strinput = Strinput.substring(3);
-            }
+
 
             rhytmUsed.add(this.allRhytm.get(choice));
         }
