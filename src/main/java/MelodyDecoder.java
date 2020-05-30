@@ -30,7 +30,8 @@ public class MelodyDecoder {
     Integer previousNote=0;
     int beatCounter = 0;
 
-    public MelodyDecoder(String strinput, String binaryOutput, ArrayList<String[]> parsedrhytm) {
+    public MelodyDecoder(String strinput, String binaryOutput, ArrayList<String[]> parsedrhytm, Adder adder) {
+        this.adder=adder;
         Strinput = strinput;
         this.binaryOutput=binaryOutput;
         this.rhytm=parsedrhytm;
@@ -40,7 +41,7 @@ public class MelodyDecoder {
 
     //todo                              MAIN METHOD, CHRONOLOGICALY CALLS ALL METHODS
     public void decodeMelody(){
-         this.adder=new Adder(this.getTonicNote(),new int[]{0,1,2,3});
+         //this.adder=new Adder(/*this.getTonicNote(),new int[]{0,1,2,3}*/);
 
         melodyNotes= adder.getKeyNotes();   //todo      debug
         ArrayList<Integer[]> framenotes=adder.getFrameNotes();
@@ -160,12 +161,14 @@ public void copiedMeasureDecoder(Integer chordNote,Integer[]previousChord, Integ
     int x1=0;*/
     int d1=0;
     int d2=0;
-    //todo
+
 
 
     for (int i=0;i<melodyNotes.length;i++){
         if(melodyNotes[i]==chordNote)
             d1=i;
+    }
+    for (int i=0;i<melodyNotes.length;i++){
         if(melodyNotes[i]==melody.get(melodyCounter))
             d2=i;
        /* if(melodyNotes[i]==playedChord[1])
@@ -180,11 +183,11 @@ public void copiedMeasureDecoder(Integer chordNote,Integer[]previousChord, Integ
         x0=a-b;
         x1=x0-7;
     }*/
-    if(d1>d2)
-        binaryOutput+="1";
-    else
-        binaryOutput+="0";
-
+    if(d1>d2) {
+        binaryOutput += "0";
+    }else {
+        binaryOutput += "1";
+    }
     for(int i = 0;i<4;i++){
         for(int j =0; j < rhytm.get(beatCounter).length;j++){
             if(rhytm.get(beatCounter)[j]!=null)

@@ -48,11 +48,13 @@ public class MelodyAutomaton_2 {
     }
 
 public void createMelody(){
-
+    MyPattern.add("V1 "+(firstChord[1]-12)+"majww "+(secondChord[1]-12)+"majww "+(thirdChord[1]-12)+"minww "+(fourthChord[1]-12)+"majww ");
+    MyPattern.add("V0 ");
+    ControlString+=firstChord[1]-12+"majww+";
         addMelody(8,firstChord);
 
         //todo ///////////////////////////////////////////////////////////////
-
+    ControlString+=secondChord[1]-12+"majww+";
     addCopiedMeasure(measure1,firstChord,secondChord);
 
 
@@ -65,9 +67,11 @@ public void createMelody(){
     addFrameNote(MiddleNote);
 
     //todo ///////////////////////////////////////////////////////////////-------------------------
+   ControlString+=thirdChord[1]-12+"majww+";
     addMelody(24,thirdChord);
 
     //todo ///////////////////////////////////////////////////////////////
+    ControlString+=fourthChord[1]-12+"majww+";
     addCopiedMeasure(measure2,thirdChord,fourthChord);
 
     //todo ///////////////////////////////////////////////////////////////
@@ -76,10 +80,14 @@ public void createMelody(){
     //todo ///////////////////////////////////////////////////////////////
     addFrameNote(LastNote);
 
+
     System.out.println(getControlString());
 }
 
 private void addMelody(int b, Integer[] playedChord){
+
+
+
         while(beatCounter<b){
             for (int i = 0; i < rhytmAtBeat.get(beatCounter).length;i++) {
                 if (beatCounter % 2 == 0&&i==0) {
@@ -88,7 +96,7 @@ private void addMelody(int b, Integer[] playedChord){
 
                     this.Strinput = Strinput.substring(2);
                     MyPattern.add(playedChord[choice] + rhytmAtBeat.get(beatCounter)[i] + " ");
-                    ControlString+=playedChord[choice] + rhytmAtBeat.get(beatCounter)[i] + " ";
+                    ControlString+=playedChord[choice] + rhytmAtBeat.get(beatCounter)[i] + "_";
                     System.out.println("chord note: " + playedChord[choice]+" choice "+choice );             //todo debug
                     previousNote=playedChord[choice];
                     if(beatCounter<4){
@@ -114,7 +122,7 @@ private void addMelody(int b, Integer[] playedChord){
                         }
                     }else{      //TODO ADD REST
                         MyPattern.add(rhytmAtBeat.get(beatCounter)[i]+" ");
-                        ControlString+=rhytmAtBeat.get(beatCounter)[i]+" ";
+                        ControlString+=rhytmAtBeat.get(beatCounter)[i]+"_";
                         System.out.println("add rest "+rhytmAtBeat.get(beatCounter)[i]);                        //todo debug
 
                         if(beatCounter<4){
@@ -125,9 +133,9 @@ private void addMelody(int b, Integer[] playedChord){
                     }
                 }
             }
-            if((beatCounter+1)%4==0){
+            if((beatCounter+1)%8==0){
                 MyPattern.add(" | ");
-                ControlString += " | ";
+                ControlString += "|";
             }
             beatCounter++;
         }
@@ -183,7 +191,7 @@ private void addMelody(int b, Integer[] playedChord){
         //}
         MyPattern.add(melodyNotes[previousNotePosition+c]+rhytmAtBeat.get(beatCounter)[i]+" ");
         previousNote=melodyNotes[previousNotePosition+c];
-        ControlString+=melodyNotes[previousNotePosition+c]+rhytmAtBeat.get(beatCounter)[i]+" ";
+        ControlString+=melodyNotes[previousNotePosition+c]+rhytmAtBeat.get(beatCounter)[i]+"_";
         System.out.println("add a step "+c+" "+melodyNotes[previousNotePosition+c]+rhytmAtBeat.get(beatCounter)[i]+" ");       //todo debug
 
         if(beatCounter<4){
@@ -207,7 +215,7 @@ private void addMelody(int b, Integer[] playedChord){
 
         MyPattern.add(melodyNotes[previousNotePosition+c]+rhytmAtBeat.get(beatCounter)[i]+" ");
         previousNote=melodyNotes[previousNotePosition+c];
-        ControlString+=melodyNotes[previousNotePosition+c]+rhytmAtBeat.get(beatCounter)[i]+" ";
+        ControlString+=melodyNotes[previousNotePosition+c]+rhytmAtBeat.get(beatCounter)[i]+"_";
         System.out.println("add a leap "+c+" "+melodyNotes[previousNotePosition+c]+rhytmAtBeat.get(beatCounter)[i]+" ");       //todo debug
 
         if(beatCounter<4){
@@ -236,16 +244,18 @@ private void addMelody(int b, Integer[] playedChord){
         }
         if(a<b){
             x0=a-b;
-            x1=7+x1;
+            x1=7+x0;
         }else{
-            x0=a-b;
-            x1=x0-7;
+            x0=b-a;
+            x1=x0+7;
         }
-        if(choice==0)
-            c=x0;
-            else
-            c=x1;
-
+        if(choice==0) {
+            c = x0;
+            System.out.println("kopirovanie do dola 0");
+        }else {
+            System.out.println("kopirovanie do hora 1");
+            c = x1;
+        }
 
         for(int i = 0; i < theMeasure.size();i++){
             if(!theMeasure.get(i).equals("Ri")&&!theMeasure.get(i).equals("Rs")){
@@ -256,16 +266,16 @@ private void addMelody(int b, Integer[] playedChord){
                     }
                 }
                 MyPattern.add(melodyNotes[previousNotePosition+c]+theMeasure.get(i).substring(2)+" ");
-                ControlString+=melodyNotes[previousNotePosition+c]+theMeasure.get(i).substring(2)+" ";
+                ControlString+=melodyNotes[previousNotePosition+c]+theMeasure.get(i).substring(2)+"_";
             }
             else{
                 MyPattern.add(theMeasure.get(i)+" ");
-                ControlString +=theMeasure.get(i)+" ";
+                ControlString +=theMeasure.get(i)+"_";
             }
         }
         beatCounter+=4;
         MyPattern.add("| ");
-        ControlString+="| ";
+        ControlString+="";
 
     }
 
@@ -301,16 +311,16 @@ private void addMelody(int b, Integer[] playedChord){
         for (int i=0;i<rhytmAtBeat.get(beatCounter).length;i++){
             if((!rhytmAtBeat.get(beatCounter)[i].equals("Ri"))&&(!rhytmAtBeat.get(beatCounter)[i].equals("Rs"))) {
                 MyPattern.add(melodyNotes[previousNotePosition + c] + rhytmAtBeat.get(beatCounter)[i] + " ");
-                ControlString += melodyNotes[previousNotePosition + c] + rhytmAtBeat.get(beatCounter)[i] + " ";
+                ControlString += melodyNotes[previousNotePosition + c] + rhytmAtBeat.get(beatCounter)[i] + "_";
                 previousNotePosition += c;
             }else{
                 MyPattern.add(rhytmAtBeat.get(beatCounter)[i]+" ");
-                ControlString+=rhytmAtBeat.get(beatCounter)[i]+" ";
+                ControlString+=rhytmAtBeat.get(beatCounter)[i]+"_";
             }
         }
         beatCounter++;
         MyPattern.add(frameNote + rhytmAtBeat.get(beatCounter)[0] + " ");
-        ControlString+=frameNote + rhytmAtBeat.get(beatCounter)[0] + " ";
+        ControlString+=frameNote + rhytmAtBeat.get(beatCounter)[0] + "_";
         beatCounter++;
         MyPattern.add("| ");
         ControlString+="| \n";

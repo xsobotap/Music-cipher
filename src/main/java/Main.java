@@ -36,12 +36,18 @@ public class Main {
         String controlString;
         String finalString="";
         Pattern mainPattern = new Pattern();
-        //todo   Choosing key by tonic value + choosing chord progression with permutation 0=I 1=V 2=VI 3=IV
-        Adder adder = new Adder(0,new int[]{0,1,2,3});
-        //todo   Generating random binary string
-        String Strinput = adder.binNumber();
 
-        System.out.println(Strinput);
+
+
+        //todo   Choosing key by tonic value + choosing chord progression with permutation 0=I 1=V 2=VI 3=IV
+        Adder adder = new Adder();
+        String Strinput = adder.binNumber();
+        System.out.println("bity na zaciatku "+Strinput);
+        adder.createHarmony(Strinput);
+        Strinput=adder.getStrinput();
+
+        //todo   Generating random binary string
+
 
 
 //        ArrayList<Pattern> patterns = new ArrayList<Pattern>();
@@ -83,11 +89,11 @@ public class Main {
             melodyAutomaton.createMelody();
             Strinput = melodyAutomaton.getStrinput();
             System.out.println(mainPattern.toString());
-            System.out.println(Strinput);
+            System.out.println("toto zostalo z inputu "+Strinput);
 
             System.out.println("zakodovali sme dokopy " + (200 - Strinput.length()));
             controlString = adder.codedString(200 - Strinput.length());
-            System.out.println(controlString);
+            System.out.println("tieto bity sme zakodovali do rymtu a melodie "+controlString);
 //            patterns.get(k).add("Rw");
 //        }
 //
@@ -99,7 +105,7 @@ public class Main {
 //        mainPattern.add(patterns.get(0));
 //        System.out.println("it is correct");
 
-        
+
 
 
         //                         TODO SAVES PATTERN TO DESKTOP
@@ -115,35 +121,42 @@ public class Main {
 
         //todo                      LOAD PATTERN FROM DESKTOP
 
-//        String BinaryOutput="";
-//Pattern loadedPattern=null;
-//Pattern translatedPattern=new Pattern();
-//        try {
-//
-//            loadedPattern=MidiFileManager.loadPatternFromMidi(new File("C:\\Users\\chcem w7\\Desktop\\miusik.mid"));
-//
-//
-//        } catch (Exception e) {
-//            System.out.println("Unable to create file");
-//        }
-//         translatedPattern.add(adder.translateNotes(loadedPattern.getPattern().toString()));
-//        System.out.println(translatedPattern.toString());
-//        RhytmDecoder rhytmDecoder = new RhytmDecoder(translatedPattern.toString(),BinaryOutput);
-//        rhytmDecoder.decodeRhytm();
-//        System.out.println(rhytmDecoder.getBinaryOutput());
-//        finalString+=rhytmDecoder.getBinaryOutput();
-//
-//        MelodyDecoder melodyDecoder = new MelodyDecoder(translatedPattern.toString(),BinaryOutput,rhytmDecoder.getGroupedParsedRhytm());
-//        melodyDecoder.decodeMelody();
-//        finalString+=melodyDecoder.getBinaryOutput();
-//
-//        for(int i =0;i<finalString.length();i++){
-//            if(finalString.toCharArray()[i]==controlString.toCharArray()[i]){
-//                System.out.print("\u001B[32m"+finalString.toCharArray()[i]);
-//            }else{
-//                System.out.print("\u001B[31m"+finalString.toCharArray()[i]);
-//            }
-//        }
+        String BinaryOutput="";
+Pattern loadedPattern=null;
+Pattern translatedPattern=new Pattern();
+        try {
+
+            loadedPattern=MidiFileManager.loadPatternFromMidi(new File("C:\\Users\\chcem w7\\Desktop\\miusik.mid"));
+
+
+        } catch (Exception e) {
+            System.out.println("Unable to create file");
+        }
+        System.out.println(loadedPattern.getPattern());
+        translatedPattern.add(adder.translateNotes(loadedPattern.getPattern().toString()));
+        finalString=adder.getBinaryOutput();
+        controlString=finalString+controlString;
+        System.out.println(finalString);
+        System.out.println(translatedPattern.toString());
+        RhytmDecoder rhytmDecoder = new RhytmDecoder(translatedPattern.toString(),BinaryOutput);
+        rhytmDecoder.decodeRhytm();
+        System.out.println(rhytmDecoder.getBinaryOutput());
+        finalString+=rhytmDecoder.getBinaryOutput();
+
+        MelodyDecoder melodyDecoder = new MelodyDecoder(translatedPattern.toString(),BinaryOutput,rhytmDecoder.getGroupedParsedRhytm(),adder);
+        melodyDecoder.decodeMelody();
+        finalString+=melodyDecoder.getBinaryOutput();
+
+        for(int i =0;i<finalString.length();i++){
+            if(i % 4 == 0){
+                System.out.print(" ");
+            }
+            if(finalString.toCharArray()[i]==controlString.toCharArray()[i]){
+                System.out.print("\u001B[32m"+finalString.toCharArray()[i]);
+            }else{
+                System.out.print("\u001B[31m"+finalString.toCharArray()[i]);
+            }
+        }
 
     }*/
     public static String toBitString(final byte[] b) {
@@ -168,7 +181,38 @@ public class Main {
 
     public static void main(String[] args) {
 
-      /*  HashMap<Character,String> base32 = new HashMap<Character, String>() {{
+        CryptoModule cryptoModule = new CryptoModule();
+        CompositionModule compositionModule = new CompositionModule();
+        String input = "pavolsobota";
+        String a;
+        String b;
+        try {
+            String Strinput = cryptoModule.encryptData(input);
+            SecretKey secretKey = cryptoModule.getSecretKey();
+            System.out.println("toto je secretKey "+secretKey.toString());
+            a= Strinput;
+            compositionModule.compositionModule(Strinput);
+            Strinput=compositionModule.decompositionModule();
+            b=Strinput;
+            for(int i = 0; i < b.length();i++){
+                if(a.toCharArray()[i]==b.toCharArray()[i]){
+                    System.out.print("\u001B[30m"+a.toCharArray()[i]);
+                }else{
+                    System.out.print("\u001B[31m"+b.toCharArray()[i]);
+                }
+
+            }
+            System.out.println();
+
+            String openText = cryptoModule.decryptData(Strinput,secretKey);
+            System.out.println("Vysledny output: ");
+            System.out.println(openText);
+        }catch(Exception e){
+            System.out.println(e.getLocalizedMessage());
+        }
+
+
+       /* HashMap<Character,String> base32 = new HashMap<Character, String>() {{
             put('a', "00000");
             put('b', "00001");
             put('c', "00010");
@@ -262,14 +306,14 @@ try{
 
     }catch(Exception e){
         System.out.println(e.getLocalizedMessage());
-    }*//*
+    }
 
 
 
-        *//*try {
-            *//**//*Base32 base32 = new Base32();
+        try {
+            Base32 base32 = new Base32();
             byte[] a=base32.encode("test".getBytes());
-            System.out.println(base32);*//**//*
+            System.out.println(base32);
 
             AESCypher aes = new AESCypher();
 
@@ -288,11 +332,11 @@ try{
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
 
-        }*//*
-*//*try {
-    *//**//*Base32 base32 = new Base32();
+        }
+try {
+    Base32 base32 = new Base32();
     byte[] a = base32.encode("test".getBytes());
-    System.out.println(base32);*//**//*
+    System.out.println(base32);
 
 
     //// TODO                               generating block of bytes of size 16B = bits
@@ -315,9 +359,9 @@ try{
     System.out.println();
 }catch(Exception e){
     System.out.println(e.getLocalizedMessage());
-}*/
+}
 
-
+*/
 //try {
 //    byte[] input = new byte[16];
 //    for(int i =0; i< 16;i++){
@@ -333,17 +377,7 @@ try{
 //    System.out.println(e.getLocalizedMessage());
 //}
 
-        CryptoModule cryptoModule = new CryptoModule();
-        String input = "ab";
-        try {
-            String Strinput = cryptoModule.encryptData(input);
-            SecretKey secretKey = cryptoModule.getSecretKey();
-            System.out.println();
-            String openText = cryptoModule.decryptData(Strinput,secretKey);
-            System.out.println(openText);
-        }catch(Exception e){
-        System.out.println(e.getLocalizedMessage());
-    }
+
 
 
     }
